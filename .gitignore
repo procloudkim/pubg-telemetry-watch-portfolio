@@ -1,0 +1,9 @@
+data/
+.env
+__pycache__/
+reports/
+/private/
+.venv/
+*.egg-info/
+/.scratch/
+.mypy_cache/

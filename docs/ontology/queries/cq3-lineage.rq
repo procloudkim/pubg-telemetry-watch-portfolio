@@ -1,0 +1,13 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?lineageEdges ?cycleNodes
+WHERE {
+  {
+    SELECT (COUNT(*) AS ?lineageEdges)
+    WHERE { ?artifact prov:wasDerivedFrom ?source . }
+  }
+  {
+    SELECT (COUNT(DISTINCT ?cyclic) AS ?cycleNodes)
+    WHERE { ?cyclic prov:wasDerivedFrom+ ?cyclic . }
+  }
+}

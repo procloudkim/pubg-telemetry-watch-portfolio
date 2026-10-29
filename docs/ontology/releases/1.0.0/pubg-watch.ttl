@@ -1,0 +1,123 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl>
+    a owl:Ontology ;
+    owl:versionIRI <https://procloudkim.github.io/pubg-telemetry-watch/ontology/releases/1.0.0/pubg-watch.ttl> ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:label "PUBG Telemetry Watch ontology"@en ;
+    rdfs:comment "Vocabulary for the v3 semantic shadow sidecar."@en .
+
+ptw:ScopedPlayerIdentity a owl:Class ;
+    rdfs:label "Scoped player identity"@en .
+
+ptw:Match a owl:Class ;
+    rdfs:label "Match"@en .
+
+ptw:TeamInstance a owl:Class ;
+    rdfs:label "Team instance"@en .
+
+ptw:Observation a owl:Class ;
+    rdfs:label "R2 observation"@en .
+
+ptw:ExperimentProtocol a owl:Class ;
+    rdfs:label "Experiment protocol"@en ;
+    rdfs:comment "Frozen cohort, selection and evaluation contract."@en .
+
+ptw:RuleProtocol a owl:Class ;
+    rdfs:label "Rule protocol"@en ;
+    rdfs:comment "Frozen event interpretation and rule contract."@en .
+
+ptw:EvaluationResult a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Evaluation result"@en .
+
+ptw:DataArtifact a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Data artifact"@en .
+
+ptw:PipelineRun a owl:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Pipeline run"@en .
+
+ptw:memberOf a owl:ObjectProperty ;
+    rdfs:domain ptw:ScopedPlayerIdentity ;
+    rdfs:range ptw:TeamInstance .
+
+ptw:inMatch a owl:ObjectProperty ;
+    rdfs:domain ptw:TeamInstance ;
+    rdfs:range ptw:Match .
+
+ptw:aboutPlayer a owl:ObjectProperty ;
+    rdfs:domain ptw:Observation ;
+    rdfs:range ptw:ScopedPlayerIdentity .
+
+ptw:measuredIn a owl:ObjectProperty ;
+    rdfs:domain ptw:Observation ;
+    rdfs:range ptw:Match .
+
+ptw:governedByExperiment a owl:ObjectProperty ;
+    rdfs:range ptw:ExperimentProtocol .
+
+ptw:evaluatedByRule a owl:ObjectProperty ;
+    rdfs:range ptw:RuleProtocol .
+
+ptw:aggregatesObservation a owl:ObjectProperty ;
+    rdfs:domain ptw:EvaluationResult ;
+    rdfs:range ptw:Observation .
+
+ptw:analysisStatus a owl:ObjectProperty ;
+    rdfs:domain ptw:Observation .
+
+ptw:skipReason a owl:ObjectProperty ;
+    rdfs:domain ptw:Observation .
+
+ptw:statusEvaluated a owl:NamedIndividual .
+ptw:statusTargetBelowMinAttacks a owl:NamedIndividual .
+ptw:statusMatchPoolBelow8 a owl:NamedIndividual .
+ptw:statusMatchPoolBelowSignalCapable a owl:NamedIndividual .
+
+ptw:playerKey a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:keyNamespace a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+ptw:seasonId a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:identityCategory a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:matchId a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:teamKey a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:observationId a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:protocolVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:ruleProtocolVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:runId a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:ontologyVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:rank a owl:DatatypeProperty ; rdfs:range xsd:positiveInteger .
+ptw:rankDecile a owl:DatatypeProperty ; rdfs:range xsd:positiveInteger .
+ptw:split a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:recentIndex a owl:DatatypeProperty ; rdfs:range xsd:positiveInteger .
+ptw:mode a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:mapName a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:attacks a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:damageEvents a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:ratio a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+ptw:minimumSignalPool a owl:DatatypeProperty ; rdfs:range xsd:positiveInteger .
+ptw:eligiblePlayers a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:matchMean a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+ptw:matchSd a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+ptw:localZ a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+ptw:reviewCandidate a owl:DatatypeProperty ; rdfs:range xsd:boolean .
+ptw:artifactPath a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:managedArtifact a owl:DatatypeProperty ; rdfs:range xsd:boolean .
+ptw:layer a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:dataset a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:mediaType a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:byteSize a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:recordCount a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:sha256 a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:experimentStatus a owl:DatatypeProperty ; rdfs:range xsd:string .
+ptw:acceptedObservations a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:primaryEvaluatedPlayers a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:primaryReviewCandidates a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:secondaryEvaluatedObservations a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+ptw:secondaryReviewCandidates a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .

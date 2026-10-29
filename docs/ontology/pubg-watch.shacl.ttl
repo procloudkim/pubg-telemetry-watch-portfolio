@@ -1,0 +1,223 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#> .
+@prefix ptwsh: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.shacl.ttl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ptwsh:ScopedPlayerIdentityShape a sh:NodeShape ;
+    sh:targetClass ptw:ScopedPlayerIdentity ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:playerKey ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{24}$" ] ;
+    sh:property [ sh:path ptw:keyNamespace ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:anyURI ] ;
+    sh:property [ sh:path ptw:seasonId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:identityCategory ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ;
+                  sh:in ( "account"^^xsd:string "ai"^^xsd:string "other"^^xsd:string ) ] ;
+    sh:property [ sh:path ptw:governedByExperiment ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:ExperimentProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:memberOf ; sh:class ptw:TeamInstance ; sh:nodeKind sh:IRI ] .
+
+ptwsh:MatchShape a sh:NodeShape ;
+    sh:targetClass ptw:Match ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:matchId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:mode ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:hasValue "squad-fpp"^^xsd:string ] ;
+    sh:property [ sh:path ptw:mapName ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] .
+
+ptwsh:TeamInstanceShape a sh:NodeShape ;
+    sh:targetClass ptw:TeamInstance ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:teamKey ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{24}$" ] ;
+    sh:property [ sh:path ptw:inMatch ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:Match ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path [ sh:inversePath ptw:memberOf ] ; sh:minCount 1 ;
+                  sh:class ptw:ScopedPlayerIdentity ; sh:nodeKind sh:IRI ] .
+
+ptwsh:ExperimentProtocolShape a sh:NodeShape ;
+    sh:targetClass ptw:ExperimentProtocol ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:protocolVersion ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] .
+
+ptwsh:RuleProtocolShape a sh:NodeShape ;
+    sh:targetClass ptw:RuleProtocol ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:ruleProtocolVersion ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] .
+
+ptwsh:ObservationShape a sh:NodeShape ;
+    sh:targetClass ptw:Observation ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:observationId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{24}$" ] ;
+    sh:property [ sh:path ptw:aboutPlayer ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:ScopedPlayerIdentity ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:measuredIn ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:Match ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:governedByExperiment ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:ExperimentProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:evaluatedByRule ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:RuleProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:analysisStatus ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:nodeKind sh:IRI ;
+                  sh:in ( ptw:statusEvaluated ptw:statusTargetBelowMinAttacks
+                          ptw:statusMatchPoolBelow8 ptw:statusMatchPoolBelowSignalCapable ) ] ;
+    sh:property [ sh:path ptw:skipReason ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:seasonId ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:rank ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:positiveInteger ; sh:maxInclusive 100 ] ;
+    sh:property [ sh:path ptw:rankDecile ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:positiveInteger ; sh:maxInclusive 10 ] ;
+    sh:property [ sh:path ptw:split ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:hasValue "holdout"^^xsd:string ] ;
+    sh:property [ sh:path ptw:recentIndex ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:positiveInteger ; sh:maxInclusive 5 ] ;
+    sh:property [ sh:path ptw:mode ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:hasValue "squad-fpp"^^xsd:string ] ;
+    sh:property [ sh:path ptw:mapName ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:attacks ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:damageEvents ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:ratio ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+    sh:property [ sh:path ptw:minimumSignalPool ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:positiveInteger ] ;
+    sh:property [ sh:path ptw:eligiblePlayers ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:matchMean ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+    sh:property [ sh:path ptw:matchSd ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+    sh:property [ sh:path ptw:localZ ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+    sh:property [ sh:path ptw:reviewCandidate ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:boolean ] ;
+    sh:or (
+        [ sh:property [ sh:path ptw:analysisStatus ; sh:hasValue ptw:statusEvaluated ] ;
+          sh:property [ sh:path ptw:eligiblePlayers ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchMean ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchSd ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:localZ ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:skipReason ; sh:maxCount 0 ] ]
+        [ sh:property [ sh:path ptw:analysisStatus ; sh:hasValue ptw:statusTargetBelowMinAttacks ] ;
+          sh:property [ sh:path ptw:eligiblePlayers ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:matchMean ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:matchSd ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:localZ ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:skipReason ; sh:hasValue ptw:statusTargetBelowMinAttacks ] ;
+          sh:property [ sh:path ptw:reviewCandidate ; sh:hasValue false ] ]
+        [ sh:property [ sh:path ptw:analysisStatus ; sh:hasValue ptw:statusMatchPoolBelow8 ] ;
+          sh:property [ sh:path ptw:eligiblePlayers ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchMean ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchSd ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:localZ ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:skipReason ; sh:hasValue ptw:statusMatchPoolBelow8 ] ;
+          sh:property [ sh:path ptw:reviewCandidate ; sh:hasValue false ] ]
+        [ sh:property [ sh:path ptw:analysisStatus ; sh:hasValue ptw:statusMatchPoolBelowSignalCapable ] ;
+          sh:property [ sh:path ptw:eligiblePlayers ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchMean ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:matchSd ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:localZ ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:skipReason ; sh:hasValue ptw:statusMatchPoolBelowSignalCapable ] ;
+          sh:property [ sh:path ptw:reviewCandidate ; sh:hasValue false ] ]
+    ) .
+
+ptwsh:EvaluationResultShape a sh:NodeShape ;
+    sh:targetClass ptw:EvaluationResult ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:runId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path ptw:governedByExperiment ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:ExperimentProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:evaluatedByRule ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:RuleProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:aggregatesObservation ; sh:minCount 1 ;
+                  sh:class ptw:Observation ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:experimentStatus ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:acceptedObservations ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:primaryEvaluatedPlayers ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:primaryReviewCandidates ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:secondaryEvaluatedObservations ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:secondaryReviewCandidates ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:PipelineRun ; sh:nodeKind sh:IRI ] .
+
+ptwsh:DataArtifactShape a sh:NodeShape ;
+    sh:targetClass ptw:DataArtifact ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:artifactPath ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path ptw:managedArtifact ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:boolean ] ;
+    sh:property [ sh:path ptw:layer ; sh:maxCount 1 ; sh:datatype xsd:string ;
+                  sh:in ( "bronze"^^xsd:string "silver"^^xsd:string "gold"^^xsd:string ) ] ;
+    sh:property [ sh:path ptw:dataset ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path ptw:mediaType ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path ptw:byteSize ; sh:maxCount 1 ; sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:recordCount ; sh:maxCount 1 ; sh:datatype xsd:nonNegativeInteger ] ;
+    sh:property [ sh:path ptw:sha256 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+                  sh:pattern "^[0-9a-f]{64}$" ] ;
+    sh:property [ sh:path prov:wasDerivedFrom ; sh:class ptw:DataArtifact ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path prov:wasGeneratedBy ; sh:maxCount 1 ;
+                  sh:class ptw:PipelineRun ; sh:nodeKind sh:IRI ] ;
+    sh:or (
+        [ sh:property [ sh:path ptw:managedArtifact ; sh:hasValue true ] ;
+          sh:property [ sh:path ptw:layer ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:dataset ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:mediaType ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:byteSize ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:recordCount ; sh:minCount 1 ] ;
+          sh:property [ sh:path ptw:sha256 ; sh:minCount 1 ] ;
+          sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ] ]
+        [ sh:property [ sh:path ptw:managedArtifact ; sh:hasValue false ] ;
+          sh:property [ sh:path ptw:layer ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:dataset ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:mediaType ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:byteSize ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:recordCount ; sh:maxCount 0 ] ;
+          sh:property [ sh:path ptw:sha256 ; sh:maxCount 0 ] ;
+          sh:property [ sh:path prov:wasGeneratedBy ; sh:maxCount 0 ] ]
+    ) .
+
+ptwsh:PipelineRunShape a sh:NodeShape ;
+    sh:targetClass ptw:PipelineRun ;
+    sh:nodeKind sh:IRI ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:path ptw:runId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path ptw:ontologyVersion ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:datatype xsd:string ; sh:hasValue "1.0.0"^^xsd:string ] ;
+    sh:property [ sh:path ptw:governedByExperiment ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:ExperimentProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path ptw:evaluatedByRule ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:class ptw:RuleProtocol ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path prov:used ; sh:minCount 1 ;
+                  sh:class ptw:DataArtifact ; sh:nodeKind sh:IRI ] .

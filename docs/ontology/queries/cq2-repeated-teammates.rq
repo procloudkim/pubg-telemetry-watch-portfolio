@@ -1,0 +1,15 @@
+PREFIX ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#>
+
+SELECT (COUNT(*) AS ?repeatedPairs)
+WHERE {
+  {
+    SELECT ?left ?right
+    WHERE {
+      ?left ptw:memberOf ?team .
+      ?right ptw:memberOf ?team .
+      FILTER(STR(?left) < STR(?right))
+    }
+    GROUP BY ?left ?right
+    HAVING(COUNT(DISTINCT ?team) >= 2)
+  }
+}

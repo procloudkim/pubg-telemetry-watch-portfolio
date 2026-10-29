@@ -1,0 +1,162 @@
+{
+  "connection": {
+    "purpose": "Open known schema; enforce FK/WAL/FULL; create session input_player; own read snapshot lifetime",
+    "grain_keys": "One connection; schema version; input_player PK player_key",
+    "null_duplicates": "Unknown/nonempty version-0 DB rejected; temp player keys unique and non-NULL",
+    "transaction": "Schema initialization only on empty DB; writers hold flock. read_snapshot begins only when no transaction exists and rolls back only that owned read transaction on success/error; borrowed read/write transactions remain caller-owned",
+    "indexes": "sqlite_master schema lookup, input_player PK",
+    "verification": "tests/test_ops.py; tests/test_ops_review.py schema rejection; tests/test_ops_snapshots.py ownership, nested reads and error cleanup"
+  },
+  "registration": {
+    "purpose": "Register immutable batch input snapshot and deduplicated jobs",
+    "grain_keys": "batch_id; job_id; batch_job(batch_id,job_id)",
+    "null_duplicates": "Required metadata non-NULL; ON CONFLICT job_id reuses only matching metadata; batch mismatch rejected",
+    "transaction": "One registration transaction under flock",
+    "indexes": "PK batch, job, batch_job",
+    "verification": "test_repeated_registration_across_batches_has_one_committed_result"
+  },
+  "batch-read": {
+    "purpose": "Require existing batch",
+    "grain_keys": "One row by batch_id",
+    "null_duplicates": "Missing row -> BATCH_NOT_FOUND",
+    "transaction": "Operations query snapshot or existing caller/writer transaction; the query ends only a snapshot it started",
+    "indexes": "batch PK",
+    "verification": "tests/test_ops.py; review unknown batch tests; test_missing_rows_release_owned_snapshots_before_the_next_query"
+  },
+  "recovery": {
+    "purpose": "Recover abandoned RUNNING attempts and jobs",
+    "grain_keys": "All RUNNING attempts and jobs in state DB",
+    "null_duplicates": "Interrupted elapsed remains NULL; repeated recovery has no extra history",
+    "transaction": "One transaction after exclusive process lock proves old worker exited",
+    "indexes": "job_state; attempt scan",
+    "verification": "test_killed_worker_rolls_back_or_reuses_completed_transaction"
+  },
+  "processing": {
+    "purpose": "Claim, parse, SQL parity, persist results and success; then record latency",
+    "grain_keys": "job_id; attempt(job_id,attempt_no); combat(job_id,event_index); player(job_id,player_key); signal(job_id,player_key,rule)",
+    "null_duplicates": "attempt_no=MAX+1 or 1; successful elapsed NULL until post-commit write; no partial results on failure; duplicate result keys rejected",
+    "transaction": "Claim transaction; BEGIN IMMEDIATE results+signal+case+SUCCEEDED; separate latency transaction. Database failure halts worker",
+    "indexes": "PKs; combat_attack partial index; temp player PK; no optimization before baseline",
+    "verification": "tests/test_ops.py crash, checksum, SQL mismatch and DB failure tests; tests/test_ops_review.py"
+  },
+  "ops-compute": {
+    "purpose": "Reconstruct R2 counts and statistics independently from combat projection",
+    "grain_keys": "One player_key per job; binds job_id, legacy, min_attacks, min_pool, min_signal_pool,z_hit",
+    "null_duplicates": "EXISTS prevents duplicate attacks multiplying damage; positive linked damage only in context protocol; LEFT JOIN preserves no combat players; ratios NULL at zero attacks; constant SD 1e-9; ordered player_key",
+    "transaction": "Inside result transaction; temp input_player contains only current match",
+    "indexes": "combat PK for job scan; combat_attack for EXISTS; temp B-trees for group/window/order",
+    "verification": "test_sql_compares_raw_event_counts_at_pool_and_attack_boundaries; test_constant_pool_has_zero_z_and_no_candidate; benchmark query_plan"
+  },
+  "work": {
+    "purpose": "Read queued jobs in stable order",
+    "grain_keys": "batch_job -> job, one job per batch membership",
+    "null_duplicates": "Only QUEUED; order match_id,job_id",
+    "transaction": "Writer lock across work; per-job transaction",
+    "indexes": "batch_job PK, job PK/job_state; actual query plans in evidence",
+    "verification": "tests/test_ops.py repeated registration and retry"
+  },
+  "retry": {
+    "purpose": "Explicitly requeue a failed member job",
+    "grain_keys": "job_id and batch_id",
+    "null_duplicates": "EXISTS membership; exactly one FAILED row required, other states rejected",
+    "transaction": "Single transaction under writer lock; past attempts/results untouched",
+    "indexes": "job PK; batch_job PK",
+    "verification": "test_bad_source_is_isolated_and_retry_requires_explicit_request; review preservation test"
+  },
+  "status": {
+    "purpose": "Read batch jobs and attempts for counts and measured latency",
+    "grain_keys": "Ordered job and attempt rows in a batch",
+    "null_duplicates": "NULL successful latency excluded; sample count explicit; batch membership does not multiply rows",
+    "transaction": "One Operations read_snapshot for batch/jobs/attempts; nested report or existing caller transaction reused without commit/rollback",
+    "indexes": "batch_job PK; job/attempt PK; sort by match or time",
+    "verification": "test_killed_worker_rolls_back_or_reuses_completed_transaction; tests/test_ops_benchmark.py; test_status_reads_one_snapshot_while_another_connection_commits"
+  },
+  "report": {
+    "purpose": "Aggregate R2 strata, errors and latest retries; load evidence and provenance",
+    "grain_keys": "map/mode/status; stage/error; latest attempt per job; signal; match",
+    "null_duplicates": "Only SUCCEEDED for denominators; error NULL excluded; ROW_NUMBER per job; stable sorting; no review notes in detection report",
+    "transaction": "Public facade holds writer flock. One read_snapshot covers status and report rows; owned snapshot ends before atomic files/final manifest, borrowed transaction lifetime remains with caller",
+    "indexes": "batch_job, job, player_match, attempt and signal PKs; group/window temp B-trees",
+    "verification": "test_database_error_and_publication_error_preserve_recovery_boundary; demo byte repeat test; test_report_keeps_one_snapshot_and_releases_it_before_publishing; test_queries_preserve_caller_transactions_and_pending_changes"
+  },
+  "cli": {
+    "purpose": "Reserved historical contract: CLI delegates status snapshot lifetime to Operations; no current SQL execution site",
+    "grain_keys": "No current SQL rows or direct BEGIN",
+    "null_duplicates": "Not applicable; query contracts own returned rows",
+    "transaction": "CLI owns connection lifetime only; see connection and status contracts",
+    "indexes": "Not applicable",
+    "verification": "test_invalid_manifest_and_token_have_json_error_and_exit_2"
+  },
+  "benchmark": {
+    "purpose": "Capture actual compute query plan and canonical synthetic actor results",
+    "grain_keys": "Plan step; job match; player actor; signal actor/rule",
+    "null_duplicates": "Unknown actor rejected; canonical sorting; same-version exact hashes, cross-version float tolerance 1e-9",
+    "transaction": "After measured run/report processes exit; excluded from timing",
+    "indexes": "EXPLAIN of actual protocol/job parameters; PK result reads",
+    "verification": "tests/test_ops_benchmark.py; measurements.json query_plan"
+  },
+  "ops-schema": {
+    "purpose": "Declare operational schema and invariants",
+    "grain_keys": "Each CREATE names its table and PK/FK; attempt per job+number, signal per job+player+rule, review case per signal, history per case+sequence",
+    "null_duplicates": "NOT NULL, CHECK IS TRUE and PK/UNIQUE reject incomplete success and duplicate identities; NULL latency means unmeasured",
+    "transaction": "New empty DB only; version mismatch rejected without migration",
+    "indexes": "Explicit indexes and implicit PK/UNIQUE; see each statement",
+    "verification": "tests/test_ops.py; tests/test_ops_review.py constraints and atomicity"
+  },
+  "audit-schema": {
+    "purpose": "Immutable research audit projection, dimensions, fact and five views",
+    "grain_keys": "run_id; staged observation; player; match; fact observation; artifact path; lineage source edge",
+    "null_duplicates": "State CHECK IS TRUE rejects UNKNOWN; valid skipped NULL retained; unique player/match mapping; window first evaluated and recursive path cycle checks",
+    "transaction": "In-memory schema; staged load transaction; transform BEGIN IMMEDIATE/COMMIT",
+    "indexes": "Declared PK/UNIQUEs; implicit view underlying indexes",
+    "verification": "tests/test_sql_audit.py all constraints and 13 Gold parity checks"
+  },
+  "audit-load": {
+    "purpose": "Load checksum-validated observations/artifacts and transform to audit dimensions/views",
+    "grain_keys": "run metadata; observation_id; artifact_path; (artifact,source) edge; aggregate counts",
+    "null_duplicates": "22 staging columns; conflicting dimension attributes fail FK; duplicate identities rejected; no persistent DB",
+    "transaction": "In-memory only; staged inserts with connection; script owns transform transaction",
+    "indexes": "Schema PK/UNIQUEs",
+    "verification": "tests/test_sql_audit.py; audit_run 13 checks"
+  },
+  "audit-read": {
+    "purpose": "Read aggregate views for comparison with frozen Gold",
+    "grain_keys": "run aggregate; rank_decile or map key",
+    "null_duplicates": "Empty aggregate rejected; deciles include zeros; only evaluated rows enter rates; ORDER BY supplied key",
+    "transaction": "After in-memory transform",
+    "indexes": "See audit views in sql/v3_audit.sql",
+    "verification": "tests/test_sql_audit.py; caller whitelist in docs/sql/README.md"
+  },
+  "review-read": {
+    "purpose": "List/filter case state or retrieve signal and ordered append-only history",
+    "grain_keys": "case_id uniquely references job_id/player_key/rule; history(case_id,sequence)",
+    "null_duplicates": "Optional filters bound; EXISTS batch membership avoids duplicates; missing case/batch rejected; stable case order",
+    "transaction": "One Operations read_snapshot; own BEGIN and rollback on success/error if no transaction existed, otherwise reuse caller transaction without ending it",
+    "indexes": "review_case PK and signal UNIQUE; review_history PK; batch_job PK",
+    "verification": "tests/test_ops_review.py filtering, state and evidence; tests/test_ops_snapshots.py repeated queries, missing rows, DB errors and pending writes"
+  },
+  "review-write": {
+    "purpose": "Atomically record start/note/complete/reopen and operator label",
+    "grain_keys": "case_id; next history sequence",
+    "null_duplicates": "Empty inputs and invalid transitions rejected; notes append; no update/delete history; operator is local label, not authentication",
+    "transaction": "BEGIN IMMEDIATE under same writer flock; state and history commit together",
+    "indexes": "case PK, history(case_id,sequence) PK",
+    "verification": "tests/test_ops_review.py transition, crash and replay preservation"
+  },
+  "backup": {
+    "purpose": "SQLite online backup to a new file and integrity/FK check",
+    "grain_keys": "Entire state database including review history",
+    "null_duplicates": "Existing destination rejected; no automatic DB migration",
+    "transaction": "Writer lock plus SQLite backup consistent snapshot",
+    "indexes": "Not query optimization; PRAGMA integrity_check and foreign_key_check",
+    "verification": "tests/test_ops_review.py backup/restore and hash/report comparison"
+  },
+  "test": {
+    "purpose": "Regression assertion, deliberate fault injection, or test-only SQL wrapper",
+    "grain_keys": "See enclosing named test and literal SQL; fixtures are synthetic",
+    "null_duplicates": "Tests assert valid NULL/duplicates and rejection boundaries, never production input",
+    "transaction": "Temporary DBs; test wrappers may kill before/after commit",
+    "indexes": "Inherited fixture schema; no production index changes",
+    "verification": "Source test is executable evidence; embedded child scripts included in inventory"
+  }
+}

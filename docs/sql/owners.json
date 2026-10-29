@@ -1,0 +1,6 @@
+{
+  "operations/batch.md": ["connection", "registration", "batch-read", "recovery", "processing", "ops-compute", "work", "retry", "status", "report", "cli", "ops-schema"],
+  "operations/review.md": ["review-read", "review-write"],
+  "research/audit.md": ["audit-schema", "audit-load", "audit-read"],
+  "verification/checks.md": ["benchmark", "backup", "test"]
+}

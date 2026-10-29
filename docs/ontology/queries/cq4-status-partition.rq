@@ -1,0 +1,8 @@
+PREFIX ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#>
+
+SELECT ?status (COUNT(DISTINCT ?observation) AS ?count)
+WHERE {
+  ?observation a ptw:Observation ; ptw:analysisStatus ?status .
+}
+GROUP BY ?status
+ORDER BY ?status

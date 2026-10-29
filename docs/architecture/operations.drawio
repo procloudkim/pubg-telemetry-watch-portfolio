@@ -1,0 +1,991 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17">
+  <diagram id="D01" name="As-is · 연구 보존과 로컬 배치">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="As-is · 연구 보존과 로컬 배치" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Frozen Bronze&#10;API / telemetry 원문&#10;새 API 호출 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Silver / Gold / DQ&#10;protocol 2·3 분리&#10;checksum / lineage" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Research audit&#10;SQLite :memory:&#10;semantic shadow" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Synthetic manifest&#10;TESTMATCH + R2&#10;seeded workload" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Single worker&#10;parse → detect → SQL&#10;flock / WAL / FULL" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Operational SQLite&#10;job / attempt / signal&#10;REVIEW report" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D02" name="로컬 운영 · 구현된 검토와 계측">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="로컬 운영 · 구현된 검토와 계측" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Fixed synthetic inputs&#10;seed / SHA / manifest&#10;준비 시간 제외" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Single worker&#10;parse / detect / SQL parity&#10;결과 원자적 commit" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="SQLite v2&#10;signal + review case&#10;성공 상태 함께 저장" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="GNU Time harness&#10;run / report peak RSS&#10;처리량·p50/p95·E2E" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Review CLI&#10;OPEN → IN_REVIEW&#10;COMPLETED → OPEN" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Verification&#10;crash / replay / backup&#10;offline CI" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D03" name="데이터 흐름 · 품질과 protocol 계보">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="데이터 흐름 · 품질과 protocol 계보" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Manifest PASS&#10;경로·bytes·SHA 확인&#10;객체 배열·건수 확인" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Shared parse / detect&#10;protocol 별 계산&#10;룰·임계값 고정" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="SQL independent counts&#10;attack EXISTS + damage&#10;float tolerance 1e-9" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Frozen research&#10;old protocol 보존&#10;새 결과로 덮어쓰지 않음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Operational result&#10;job scoped player_key&#10;이름은 pla***" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Atomic publication&#10;완료 batch만 REVIEW&#10;manifest 마지막 발행" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D04" name="룰 처리 · 기존 계약 유지">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="룰 처리 · 기존 계약 유지" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="R1 positions&#10;cm → m / time window&#10;차량 구간 ±2s 제외" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="R2 attacks + damage&#10;양수 피해·attackId 연결&#10;match local z-score" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="R3 groggy / kill&#10;DBNO 행동 시각&#10;AI 피해 유형 별도" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="R1 최고값 1건&#10;속도 &gt; 8.5 m/s&#10;5초 sliding window" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="R2 REVIEW candidate&#10;attacks ≥30 / pool 계약&#10;z &gt;3.0 / 구조적 skip" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="R3 REVIEW candidate&#10;3회 / 12초&#10;근거 시각·유형 보존" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D05" name="운영 DB · 기존 grain과 key">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="운영 DB · 기존 grain과 key" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="batch&#10;PK batch_id&#10;manifest / code / runtime" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="batch_job&#10;PK batch_id + job_id&#10;FK batch / job" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="job&#10;PK job_id&#10;입력·코드·runtime identity" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="attempt&#10;PK job_id + attempt_no&#10;상태 / 시간 / 실패 코드" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="player_match&#10;PK job_id + player_key&#10;R2 집계·상태·분모" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="review_signal&#10;PK job_id + player + rule&#10;FK player_match / JSON" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" value="combat_event&#10;PK job_id + event_index&#10;FK job / combat_attack index" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="470" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D06" name="연구 SQL audit · in-memory 전용">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="연구 SQL audit · in-memory 전용" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="run_meta&#10;PK run_id&#10;입력 SHA / protocol" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="stg_r2_observation&#10;PK run + observation&#10;CHECK IS TRUE / NULL" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="dim_player / dim_match&#10;PK run + player / match&#10;일관된 dimension만 적재" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="artifact / lineage_edge&#10;PK run + path / edge&#10;Gold → source 재귀" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="fact_r2_observation&#10;FK dimensions&#10;unique run/match/player" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Five views&#10;funnel / primary / decile&#10;map / lineage" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n0" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n3" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D07" name="검토 큐 · 업무 상태 · implemented">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="검토 큐 · 업무 상태 · implemented" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="review_signal&#10;PK job/player/rule&#10;판정 REVIEW 유지" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="review_case&#10;PK case_id; UNIQUE signal&#10;FK signal / current state" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="review_history&#10;PK case_id + sequence&#10;operator / UTC / action / note" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="OPEN&#10;생성 또는 reopen&#10;결과와 함께 최초 생성" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="IN_REVIEW&#10;start 허용&#10;note는 이력에 추가" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="COMPLETED&#10;complete: 업무 종료&#10;reopen → OPEN" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D08" name="처리 · 중단 · 재개 · local PASS">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="처리 · 중단 · 재개 · local PASS" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="flock → claim commit&#10;QUEUED → RUNNING&#10;attempt 기록" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Results transaction&#10;combat / player / signal&#10;case + SUCCEEDED" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Post-commit telemetry&#10;NULL → elapsed_s&#10;실패해도 성공 유지" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Exit after claim&#10;RUNNING 남음&#10;재개: INTERRUPTED 이력" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Exit before commit&#10;결과·case rollback&#10;재개: 1회만 성공" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Exit after commit&#10;성공 재사용&#10;중복 signal/case 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n0" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n1" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n2" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D09" name="계측 경계 · baseline 먼저 동결">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="계측 경계 · baseline 먼저 동결" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Prepare inputs once&#10;seed 20260909 / SHA&#10;1M / 10M; max 40k" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="GNU Time: run&#10;새 DB·새 프로세스&#10;전체 생애 peak RSS" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="GNU Time: report&#10;최종 manifest 발행&#10;전체 생애 peak RSS" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Warmup 1 + measured 3&#10;준비 실행 통계 제외&#10;환경·source hash 기록" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Latency&#10;처리 시작 → 성공 commit&#10;p50 / p95 nearest rank / n" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Throughput + E2E&#10;새 이벤트 / run+report&#10;민감도 40k/100k/200k" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D10" name="CI · offline 재현 · implemented">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="CI · offline 재현 · implemented" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Python 3.10 / 3.12 CI&#10;설정 완료 / 원격 미실행&#10;로컬 3.10/3.11/3.12 PASS" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Network namespace&#10;외부 경로 차단&#10;자식 프로세스 상속" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Offline gates&#10;전체 tests / TESTMATCH&#10;demo / SQL coverage" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="New installation&#10;source bundle / runtime&#10;secret·real data 제외" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Local performance&#10;고정 환경에서만 비교&#10;공유 CI에 SLO 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Evidence handoff&#10;source / input / metrics&#10;actual result만 기록" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D11" name="GCP staging · BLOCKED / 미배포">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="GCP staging · BLOCKED / 미배포" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Local bundle&#10;합성 입력·source·runtime&#10;실데이터·API key 제외" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Compute Engine [BLOCKED]&#10;e2-standard-2 / Linux&#10;SQLite / 1 worker" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=60;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="compute-icon" vertex="1" parent="1" style="shape=image;image=data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20id%3D%22standard_product_icon%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%20%20%3C%21--%20Generator%3A%20Adobe%20Illustrator%2029.1.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%202.1.0%20Build%20142%29%20%20--%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.st0%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20none%3B%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20.st1%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%234285f4%3B%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20.st2%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%2334a853%3B%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20.st3%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%23fbbc04%3B%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20.st4%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%23ea4335%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%3C%2Fstyle%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cg%20id%3D%22bounding_box%22%3E%0A%20%20%20%20%3Crect%20class%3D%22st0%22%20width%3D%22512%22%20height%3D%22512%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20id%3D%22art%22%3E%0A%20%20%20%20%3Cpath%20class%3D%22st1%22%20d%3D%22M380.7%2C396.7h-249.3c-8.8%2C0-16-7.2-16-16v-249.3c0-8.8%2C7.2-16%2C16-16h249.3c8.8%2C0%2C16%2C7.2%2C16%2C16v249.3c0%2C8.8-7.2%2C16-16%2C16ZM147.3%2C364.7h217.3v-217.3h-217.3v217.3Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st3%22%20d%3D%22M147.3%2C364.7h-32v-233.3c0-8.8%2C7.2-16%2C16-16h146.1v32h-130.1v217.3h0Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st1%22%20d%3D%22M443%2C364.7h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st4%22%20d%3D%22M443%2C272h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st4%22%20d%3D%22M443%2C178.5h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st4%22%20d%3D%22M349.5%2C147.3c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st4%22%20d%3D%22M256%2C147.3c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st3%22%20d%3D%22M162.5%2C147.3c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st2%22%20d%3D%22M315%2C331h-118c-8.8%2C0-16-7.2-16-16v-118c0-8.8%2C7.2-16%2C16-16h118c8.8%2C0%2C16%2C7.2%2C16%2C16v118c0%2C8.8-7.2%2C16-16%2C16ZM213%2C299h86v-86h-86v86Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st4%22%20d%3D%22M396.7%2C332.7h-32v-185.3h-124.6v-32h140.6c8.8%2C0%2C16%2C7.2%2C16%2C16v201.3Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st1%22%20d%3D%22M162.5%2C459c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st1%22%20d%3D%22M256%2C459c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st1%22%20d%3D%22M349.5%2C459c-8.8%2C0-16-7.2-16-16v-62.3c0-8.8%2C7.2-16%2C16-16s16%2C7.2%2C16%2C16v62.3c0%2C8.8-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st3%22%20d%3D%22M131.3%2C178.5h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st3%22%20d%3D%22M131.3%2C272h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22st3%22%20d%3D%22M131.3%2C364.7h-62.3c-8.8%2C0-16-7.2-16-16s7.2-16%2C16-16h62.3c8.8%2C0%2C16%2C7.2%2C16%2C16s-7.2%2C16-16%2C16Z%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E;">
+          <mxGeometry x="442" y="132" width="38" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Measurements [PLANNED]&#10;같은 bundle 전후 비교&#10;재시작·복구·실제 관측 시간" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Preflight [BLOCKED]&#10;최신 크레딧·만료 미확인&#10;Compute API 비활성" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Export / restore [PLANNED]&#10;SQLite backup / checksums&#10;local integrity / FK / parity" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Retirement [BLOCKED]&#10;별도 승인된 종료 계약&#10;목록·증빙·복원 gate" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n1" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D12" name="조건부 확장 · 현재 채택 없음">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="조건부 확장 · 현재 채택 없음" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Measured requirement&#10;동시 writer / backlog&#10;지속적 잠금 또는 기한 초과" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Single-machine options&#10;query plan / transaction&#10;매치 크기·CPU/I/O 측정" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Decision / ADR&#10;한 변경씩 실험&#10;복구·정합 gate 먼저" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="PostgreSQL [CONDITIONAL]&#10;다중 작성 근거 필요&#10;lease / recovery 재설계" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Workers [CONDITIONAL]&#10;단일 머신 한계 실측 필요&#10;분산 상태 설계 필요" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="BigQuery [CONDITIONAL]&#10;운영과 분석 경합 실측&#10;분리 export 먼저 검토" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n2" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D13" name="구현 책임 · Clean Architecture">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="구현 책임 · Clean Architecture" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §13 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="CLI / composition&#10;인수·출력·resource 수명&#10;기존 src.*는 호환 진입점" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Application use cases&#10;명령·조회·commit 순서&#10;Files / Store / Clock ports" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Domain calculations&#10;PUBG parse / rules / cohort&#10;I/O·SQL·현재 시각 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Compatibility contracts&#10;기존 명령·schema v2&#10;REVIEW·식별자 계약 유지" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Adapters&#10;SQLite / files / HTTP&#10;RDF / Markdown / clock" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Verification&#10;계층·cycle·fingerprint 검사&#10;기존 장애 지점 재주입" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n4" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n3" target="n0" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n5" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D14" name="보안 경계 · 검증과 신뢰 가정">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="보안 경계 · 검증과 신뢰 가정" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Manifest / telemetry&#10;신뢰하지 않는 파일 내용&#10;source root는 운영자 지정" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Input validation&#10;경로·bytes·SHA·records&#10;같은 byte 검증 후 사용" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="SQLite / state directory&#10;로컬 OS 권한 신뢰&#10;직접 DB 변조 방지 아님" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Local operator&#10;label / note는 자유 입력&#10;인증 주체와 구분" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="CLI / use case&#10;값 바인딩·전이 검증&#10;상태+이력 atomic commit" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Output / documentation&#10;마스킹·JSON·text escape&#10;SVG active/remote 차단" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n4" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n2" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D15" name="SQL 문서 소유권 · MECE 분할">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="SQL 문서 소유권 · MECE 분할" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · SQLite / single worker / CLI · REVIEW" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented / frozen · Dashed + label: planned, blocked or conditional · Source: DESIGN §12 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Source inventory&#10;AST / scripts / SQL fences&#10;call과 고유 text 구분" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="owners.json&#10;모든 계약 정확히 1회&#10;미할당·중복·없는 문서 거부" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="contracts.json&#10;목적·grain·NULL·binding&#10;transaction·index·test" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="operations/&#10;batch.md / review.md&#10;처리와 사람 업무 분리" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="research/audit.md&#10;동결 연구 in-memory audit&#10;schema / load / read" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="verification/checks.md&#10;benchmark / backup / tests&#10;운영 허용 구문과 구분" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;spacingLeft=16;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n1" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n1" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n1" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D16" name="PUBG 계산과 외부 자원 경계">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="PUBG 계산과 외부 자원 경계" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · refactor/clean-architecture · schema v2 / REVIEW unchanged" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented · Dashed: planned scope · Source: DESIGN §13 / architecture / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="domain/pubg&#10;parsing / detection / privacy&#10;현재 protocol 그대로" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="domain/research&#10;cohort / 분모 / 통계&#10;고정 seed·순수 입력" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="domain/review&#10;OPEN → IN_REVIEW&#10;COMPLETED → OPEN" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="application&#10;원본 로드·검산·발행 순서&#10;규칙은 domain 호출" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="application ports&#10;Files / Clock / Store&#10;HTTP / audit engines" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="adapters&#10;DB·파일·HTTP·RDF&#10;실제 I/O 및 오류 변환" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n3" target="n0" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n3" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n3" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n5" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D17" name="검증된 조회 · 시각화 연결 계약">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="검증된 조회 · 시각화 연결 계약" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-29 · read snapshot ownership · schema v2 / REVIEW unchanged" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented · Dashed: planned scope · Source: DESIGN §12–13 / ADR 024 / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="CLI / future UI [PLANNED UI]&#10;같은 조회 use case 호출&#10;UI 구현은 이번 범위 밖" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Application 조회와 발행&#10;review_list/show/status&#10;report: 상태+결과 함께 조회&#10;직접 연 snapshot 종료 후 발행" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="SQLite read_snapshot&#10;없음: 시작·성공/오류 후 종료&#10;기존: 재사용·caller만 종료&#10;중첩 status: report와 공유" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Priority 1 · evidence&#10;protocol·출처·분모·결측&#10;이벤트 시각·단위 보존" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Priority 2–3 · history / ops&#10;검토 UTC·처리 UTC 구분&#10;예약과 확정 결과 구분" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="2D replay [PLANNED]&#10;R1 끝점은 전체 경로 아님&#10;별도 원시 위치 계약 필요" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#fff7ed;fontSize=17;dashed=1;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n3" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D18" name="연구 실행과 독립 audit 경계">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="연구 실행과 독립 audit 경계" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · refactor/clean-architecture · schema v2 / REVIEW unchanged" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented · Dashed: planned scope · Source: DESIGN §13 / architecture / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Research application&#10;고정 cohort·수집 예산&#10;preflight → collect → evaluate" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="HTTP / file / clock ports&#10;예약 fsync → HTTP&#10;완료 이력 / uncertain 유지" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Frozen manifest / outputs&#10;protocol·출처·checksum&#10;write-once·원 연구 보존" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Graph audit&#10;파일 조회 → domain 투영&#10;관계·lineage 검산" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="SQL audit&#10;checksum → SQLite :memory:&#10;Gold와 13개 대조" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Semantic application&#10;두 oracle + RDF / SHACL&#10;통과 뒤 manifest 마지막 발행" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n0" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n3" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D19" name="소스 지문과 버전 간 호환">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="소스 지문과 버전 간 호환" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · refactor/clean-architecture · schema v2 / REVIEW unchanged" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented · Dashed: planned scope · Source: DESIGN §13 / architecture / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Runtime source fingerprint&#10;정렬 src/**/*.py&#10;정렬 sql/**/*.sql" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Existing schema-v2 DB&#10;case / note / history 보존&#10;자동 migration 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="New implementation&#10;기존 상태 조회·report 허용&#10;다른 코드 batch run 거부" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="Same-version replay&#10;같은 job / result hash&#10;신호·case 중복 없음" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Cross-version benchmark&#10;job-scoped player key 다름&#10;합성 actor ID로 대응" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Parity contract&#10;룰·건수·근거 exact&#10;float abs/rel 1e-9" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D20" name="채택 gate와 유지보수 증거">
+    <mxGraphModel page="1" pageWidth="1200" pageHeight="740">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="채택 gate와 유지보수 증거" vertex="1" parent="1" style="text;html=0;align=left;fontSize=27;fontStyle=1;">
+          <mxGeometry x="40" y="15" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="version" value="2026-10-27 · refactor/clean-architecture · schema v2 / REVIEW unchanged" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="60" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Solid: implemented · Dashed: planned scope · Source: DESIGN §13 / architecture / SQL inventory" vertex="1" parent="1" style="text;html=0;align=left;fontSize=14;fontStyle=0;">
+          <mxGeometry x="40" y="695" width="1120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n0" value="Architecture gate&#10;안쪽 의존·cycle 없음&#10;domain I/O·직접 SQL 금지" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="Regression gate&#10;TESTMATCH·장애·검토·복원&#10;namespace 자식까지 격리" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="Performance gate&#10;전후 각각 warmup 1 + 3&#10;1M·10M + 매치 크기 민감도" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="120" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="SQL ownership&#10;module + Class.method&#10;20개 계약 / MECE owner" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="40" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="Editable documentation&#10;draw.io → SVG → PDF&#10;설계·SQL·문서 동시 갱신" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="430" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="Preservation / boundaries&#10;동결 837개 checksum&#10;GCP blocker·미검증 명시" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacingTop=16;spacingLeft=16;strokeColor=#8095ab;fillColor=#eaf2fb;fontSize=17;">
+          <mxGeometry x="820" y="295" width="340" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="n0" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n1" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n2" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n3" target="n4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

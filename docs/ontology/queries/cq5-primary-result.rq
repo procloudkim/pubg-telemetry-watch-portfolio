@@ -1,0 +1,27 @@
+PREFIX ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT
+  (COUNT(DISTINCT ?player) AS ?primaryPlayers)
+  (SUM(IF(?candidate, 1, 0)) AS ?primaryCandidates)
+WHERE {
+  ?observation a ptw:Observation ;
+      ptw:aboutPlayer ?player ;
+      ptw:measuredIn ?match ;
+      ptw:analysisStatus ptw:statusEvaluated ;
+      ptw:split "holdout"^^xsd:string ;
+      ptw:recentIndex ?recentIndex ;
+      ptw:reviewCandidate ?candidate .
+  FILTER NOT EXISTS {
+    ?other a ptw:Observation ;
+        ptw:aboutPlayer ?player ;
+        ptw:measuredIn ?otherMatch ;
+        ptw:analysisStatus ptw:statusEvaluated ;
+        ptw:split "holdout"^^xsd:string ;
+        ptw:recentIndex ?otherIndex .
+    FILTER(
+      ?otherIndex < ?recentIndex ||
+      (?otherIndex = ?recentIndex && STR(?otherMatch) < STR(?match))
+    )
+  }
+}

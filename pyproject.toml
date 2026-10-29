@@ -1,0 +1,26 @@
+[project]
+name = "pubg-telemetry-watch"
+version = "0.0.1"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+    "rdflib==7.6.0",
+    "pyshacl==0.40.1",
+]
+
+[project.optional-dependencies]
+typecheck = ["mypy==2.4.1"]
+
+[tool.mypy]
+python_version = "3.10"
+# shortcut: diagnostics cover these five files; expand as more modules gain annotations.
+files = [
+    "src/application/ports.py",
+    "src/application/operations.py",
+    "src/adapters/sqlite_ops.py",
+    "src/cli/ops.py",
+    "tools/validation_status.py",
+]
+check_untyped_defs = true
+follow_imports = "silent"
+warn_unused_ignores = true

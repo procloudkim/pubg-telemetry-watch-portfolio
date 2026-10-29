@@ -1,0 +1,15 @@
+PREFIX ptw: <https://procloudkim.github.io/pubg-telemetry-watch/ontology/pubg-watch.ttl#>
+
+SELECT
+  (COUNT(DISTINCT ?observation) AS ?observations)
+  (COUNT(?player) AS ?playerLinks)
+  (COUNT(?match) AS ?matchLinks)
+  (COUNT(?experiment) AS ?experimentLinks)
+  (COUNT(?rule) AS ?ruleLinks)
+WHERE {
+  ?observation a ptw:Observation ;
+      ptw:aboutPlayer ?player ;
+      ptw:measuredIn ?match ;
+      ptw:governedByExperiment ?experiment ;
+      ptw:evaluatedByRule ?rule .
+}
