@@ -72,3 +72,4 @@
 2026-10-30 | Codex (main) | ask-matt로 원래 완료 정의·네 로컬 티켓·최신 근거를 대조하고 최종 인수검증/HITL 측정→공개 반영 두 작업의 유한한 완료 경로를 private 메모와 PLAN에 제안 | 완료 당시197파일 동일·현재 두 환경 판독 exit0/조건일치; 기존 각91개·mypy5개·TESTMATCH 등 PASS 근거 유지, 새 전체 검사·티켓 발행·구현·원격/cloud/commit/push 없음
 2026-10-30 | Codex (main) | to-tickets로 최종 전달본 인수검증/HITL 측정과 공개 반영/원격 확인을 로컬 이슈2건으로 발행, 01 ready-for-agent·02 needs-info 및 선행 승인 경계 명시 | TESTMATCH 1개·namespace/자식 격리·티켓 링크/형식/ignore·보존8파일·검증입력192 SHA PASS; 기존 제안/완료티켓 불변, 구현·새 전체 검사·원격/cloud/commit/push 없음
 2026-10-30 | Codex | 전달 후보 새 3.10/3.12 인수검증·전체 고정 리뷰, semantic 실패 진단/benchmark UTF-8 수정 후 각 92개·타입5파일·오프라인 게이트 PASS, 동결837 보존·개입량 기록·01 로컬 인계(외부 보류) | 게이트 통과
+2026-10-30 | Codex | 공개 CI·GCP 92검사·32회 합성 측정·독립 복원 결과와 종료 미완료 경계를 기술 문서에 반영; 고정 문서 리뷰 양축 0건 | TESTMATCH·SQL inventory·3.10/3.12 CI PASS; 자동 삭제 미예약

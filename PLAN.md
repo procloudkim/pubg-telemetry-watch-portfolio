@@ -1,5 +1,9 @@
 # 1~2일 컷
 
+> **2026-10-30 공개 기술 검증 갱신:** 공개 소스의 Python 3.10·3.12 [CI](https://github.com/procloudkim/pubg-telemetry-watch-portfolio/actions/runs/40995669920), 새 clone과 GCP의 92개 검사, 합성 장애 복구, 32회 성능 실행과 독립 Drive 복원을 확인했다. 실제 결과와 한계는 [운영 runbook](docs/operations-runbook.md#gcp-staging-status)을 따른다. 아래 날짜별 기록의 과거 cloud/공개 보류는 당시 상태다. 과거 조회 snapshot의 타입 검사 NOT_RUN 기록은 그대로 유지한다.
+>
+> 프로젝트 전체 종료·결제 해제·자동 삭제 예약은 여전히 미완료다. 지역 조회 제한·최종 동기화·종료 사전 조건을 우회하지 않는다. VM은 정지했고, 원래 프로젝트 데이터와 디스크는 보존 중이다. 예약 실행 검증은 일회성 읽기 전용 작업이며 종료 예약이 아니다.
+
 > **2026-10-29 조회 snapshot 로컬 완료:** 세 Python 환경 각각 73개 tests·demo·SQL inventory·namespace/자식 격리와 동결 837 SHA PASS. 사용자가 승인한 고정 snapshot의 정식 리뷰는 Spec 발견 0건, Standards의 PDF 확인 누락 1건 해소 후 잔여 0건이다. [검증 결과](docs/maintenance/read-snapshot-validation.md)와 [정식 리뷰 근거](private/refactoring/20261029-read-snapshots/formal-review-20261029T045254813713Z/README.md)를 따른다. 타입 검사는 사용자 지시로 NOT RUN·별도 도입 작업으로 분리했고 로컬 티켓은 ready-for-human이다. commit/push·원격 CI·cloud 보류는 유지한다. 이전 [HANDOFF](private/refactoring/20261029-read-snapshots/HANDOFF.md)와 [전체 회귀 원자료](private/refactoring/20261029-read-snapshots/resume-20261029T004439412960Z-verified/README.md)는 당시 기록으로 보존한다.
 
 > **2026-10-29 티켓 발행 완료:** 사용자 확인으로 [01 조회 snapshot 수명](.scratch/review-snapshot-lifetime/issues/01-owned-read-snapshots.md)을 로컬 tracker에 발행했다. `ready-for-agent`, 선행 티켓 없음, 완료 기준 8개다. 최신 범위는 이 티켓을 따르며 원래 명세·제안·과거 checkpoint는 당시 상태로 보존한다. 애플리케이션 구현은 시작하지 않았다.
