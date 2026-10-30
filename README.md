@@ -31,6 +31,8 @@ Bronze 원문(write-once) → Silver 검증·정규화(v3 비식별) → Gold �
 않고 `legacy_decoded_json`으로 계층화했다. 일반 파일시스템에서 처리하므로 분산 저장소의 보장을
 주장하지 않으며, atomic replace·checksum·품질 게이트가 제공하는 범위만 보장한다.
 
+2026-10-30 공개 CI·새 clone·GCP의 92개 검사와 합성 장애 복구를 확인했다. 1M/10M 클라우드 측정과 독립 백업 복원 결과는 [운영 runbook](docs/operations-runbook.md#gcp-staging-status)에 기록했다. 프로젝트 전체 종료와 자동 삭제 예약은 별도 미완료다.
+
 ## 버전별 검증 목표
 
 | 버전 | 확인하려는 것 | 현재 상태 |

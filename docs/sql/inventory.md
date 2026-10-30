@@ -10,7 +10,7 @@ resolved through its named [contract](contracts.json); [guide](README.md) descri
 
 | ID | Source / symbol | Kind | Contract |
 |---|---|---|---|
-| SQL-001 | [README.md:277](../../README.md#L277) · `<example>` | example | `test` |
+| SQL-001 | [README.md:279](../../README.md#L279) · `<example>` | example | `test` |
 | SQL-002 | [sql/ops.sql:1](../../sql/ops.sql#L1) · `<script>` | statement | `ops-schema` |
 | SQL-003 | [sql/ops.sql:3](../../sql/ops.sql#L3) · `<script>` | statement | `ops-schema` |
 | SQL-004 | [sql/ops.sql:12](../../sql/ops.sql#L12) · `<script>` | statement | `ops-schema` |

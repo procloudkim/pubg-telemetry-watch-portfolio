@@ -1,5 +1,7 @@
 # 2026-10-27 운영 검증 결과
 
+최신 공개 CI·GCP 재현·독립 백업 결과는 [운영 runbook의 2026-10-30 기록](operations-runbook.md#gcp-staging-status)을 따른다. 아래 cloud 미실행 표기는 2026-10-27 당시 상태다.
+
 이 문서는 리팩터링 전 운영 기능 추가의 완료 증거다. 이후 구조 변경의 최신 결과는
 [리팩터링 검증](maintenance/refactoring-validation.md)을 따른다. 아래 측정값은 당시 소스의 기록이다.
 

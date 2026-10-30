@@ -10,7 +10,7 @@
     {
       "source": "README.md",
       "symbol": "<example>",
-      "line": 277,
+      "line": 279,
       "kind": "example",
       "sql_or_expression": "SELECT job_id, player_key, rule\nFROM review_signal\nWHERE rule = 'R2_hit_ratio'\nORDER BY job_id, player_key, rule;\n\n-- 위 결과의 job_id와 player_key를 매개변수로 지정한다.\nSELECT event_index, event_type, attack_id, damage, event_time\nFROM combat_event\nWHERE job_id = :job_id AND player_key = :player_key\nORDER BY event_index;",
       "bindings": "none",

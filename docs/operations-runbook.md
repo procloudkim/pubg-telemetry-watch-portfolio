@@ -142,28 +142,86 @@ usability and long unattended operation require their own evidence.
 
 ## GCP staging status
 
-Staging is blocked pending current credit, exact expiry and account mode. Compute API is currently
-disabled. No VM or new cloud resource has been created by this run. Details and account context
-remain in the local blocker record. Do not activate the API or create resources until this prerequisite
-is resolved; the alternatives below are documentation only.
+The 2026-10-30 run reproduced public source commit
+[`324c376`](https://github.com/procloudkim/pubg-telemetry-watch-portfolio/commit/324c37659d3b7ee6d0ce1e29fc499543e0a8af3b)
+on one Seoul `e2-standard-2` VM: 2 vCPU, 8 GB RAM, Ubuntu 24.04.5, a 30 GB balanced
+persistent disk, Python 3.10.20 and SQLite 3.50.4. Access used IAP; the VM had no external IP,
+service account or game API credentials. The workload used synthetic inputs only.
 
-The proposed host is one Linux `e2-standard-2` VM with SQLite, no public application endpoint and
-no game API credentials. Google documents that shape as 2 vCPU and 8 GB in its
-[machine specifications](https://docs.cloud.google.com/compute/docs/general-purpose-machines).
-Before any resource action, record existing resources, the exact new-resource list, cost estimate,
-remaining credit and expiry. A billing-enabled project alone does not prove remaining trial credit.
-[Trial expiry or credit exhaustion](https://docs.cloud.google.com/free/docs/free-cloud-features)
-can end access. A paid upgrade is outside this run's defaults.
+| Evidence | Observed result |
+|---|---|
+| Public delivery | Source-only repository; [CI run 40975020519](https://github.com/procloudkim/pubg-telemetry-watch-portfolio/actions/runs/40975020519) passed on Python 3.10 and 3.12 for the linked commit |
+| Fresh public clone | Fresh Python 3.10 environment, original workspace hidden, network isolated: configured type check, 92 tests, TESTMATCH, demo, SQL inventory and result reader passed |
+| Cloud offline gate | The same checks passed on the VM; type checking covers the configured five files, not the whole repository |
+| Actual walkthrough | Before-commit process exit 37, resume to SUCCEEDED, no duplicate result, review history preserved; 3 jobs, 4 attempts, 5 cases and 8 history rows |
+| Recording | OBS captured the actual terminal walkthrough: 106.766 seconds, 1280×800 at 30 fps; no microphone/desktop audio sources. Full video playback review was not performed |
+| Independent restore | Private Drive download: source/runtime/wheel bundle (5,432 file hashes), walkthrough bundle (73 file hashes); SQLite integrity/FK, full contents, history and regenerated report bytes matched |
+| Existing project data | Private Drive archive reassembled and 85 files verified; a managed Firestore import into a separate temporary database matched all 53 original document paths and field hashes. Container descriptor/blob integrity was checked; application redeployment was not tested |
+| Benchmark archive | 624 files, including exact inputs, measurements, query plans and logs, verified after private Drive download and reassembly |
+| VM and restore-test cleanup | Benchmark VM is TERMINATED with disk retained; temporary Firestore database deletion completed and its active name returned 404. Original database remains |
+| External runner rehearsal | Windows Task Scheduler fired a one-time read-only check at the registered time; existing authentication, project identity and backup hashes passed. This was not a shutdown task |
+| Retirement | Whole-project cleanup, billing unlink and shutdown remain unexecuted; automatic deletion is not scheduled |
 
-Once unblocked, transfer the exact synthetic input and source/runtime bundle, compare baseline
-and feature revisions on the same VM, record repeat and restart recovery, and export a SQLite
-backup plus measurements/reports. Complete the first full export and local restore at least
-24 hours before expiry. Report only the actual observation duration. Cleanup follows the separate
-approved retirement inventory and evidence gates, including existing resources when explicitly
-in scope. The current project's later retirement handoff supersedes the initial new-resources-only
-plan; see [ADR 020](adr/020-scheduled-cloud-retirement.md) and the private execution contract.
-Its inventory, scheduling, retention and deletion-limit blockers remain unresolved. No cleanup or
-automatic schedule has been implemented here; check remaining disks, snapshots and storage only
-within that approved process.
-If time is insufficient, a shorter cloud observation or a later local-only reproduction is possible;
-neither alternative has been executed to bypass the current blocker.
+Two initial cloud isolation attempts failed because of home-directory traversal and user-namespace
+restrictions. Extracting the same frozen source under `/opt` allowed the complete gate to pass;
+system security settings were not changed. Those failures remain in the private evidence.
+The first Firestore hash comparison used different Unicode JSON escaping; direct field equality
+and a repeat using the original canonical encoding verified all documents. These were verification
+setup corrections, not product-code changes.
+
+### Cloud benchmark observation
+
+Baseline is the archived 2026-10-27 source (`7dbb3688…`); current runtime source fingerprint is
+`e6b68274…`. Each version ran four input profiles, with one warmup and three measured repetitions:
+32 executions in total, including 8 warmups. All runs used fresh processes and databases on the
+same VM, sequentially, from 01:51:17 to 02:40:27 UTC on 2026-10-30. Input manifest hashes and
+runtime versions matched; canonical rule/count/evidence comparisons passed in every current run.
+The historical baseline source and complete raw evidence remain in the private backup; the public
+clone can reproduce the current harness with the commands above.
+
+The table excludes warmups. Time is run plus report through process exit, excluding input
+generation and comparison; RSS is each run process's GNU Time peak in KiB, not combined with
+report RSS. Brackets show the three measured repetitions' minimum and maximum.
+
+| Events / maximum match | Version | run+report seconds, median [range] | events/s, median | run RSS KiB, median [range] |
+|---|---|---:|---:|---:|
+| 1M / 40k | baseline | 26.496 [25.914–27.103] | 37,741 | 88,148 [84,932–94,096] |
+| 10M / 40k | baseline | 253.176 [252.190–256.552] | 39,498 | 88,644 [88,620–88,788] |
+| 1M / 100k | baseline | 26.942 [26.914–27.357] | 37,117 | 171,972 [171,788–172,084] |
+| 1M / 200k | baseline | 28.242 [28.045–28.317] | 35,409 | 310,420 [310,400–310,548] |
+| 1M / 40k | current | 25.837 [25.788–26.121] | 38,704 | 80,448 [80,128–80,504] |
+| 10M / 40k | current | 250.776 [250.733–261.876] | 39,876 | 80,876 [80,852–81,772] |
+| 1M / 100k | current | 26.937 [26.314–27.249] | 37,124 | 164,096 [163,824–164,100] |
+| 1M / 200k | current | 28.569 [28.283–28.666] | 35,003 | 302,552 [272,684–302,620] |
+
+These are synthetic observations on one VM. Version order was fixed, OS caches were not reset,
+and host scheduling was not controlled. Small timing differences do not establish an optimization
+benefit. Memory grows with maximum match size; 1M versus 10M at 40k per match does not prove
+unbounded memory independence. This run does not establish real-service capacity, independent
+human usability, hardware-failure recovery or 72-hour unattended operation.
+
+The benchmark archive SHA-256 is
+`9b13a2b4a4c4628cc8afe7eba75b833ebb4f305f2b631f203cd35b2648420c64`.
+The walkthrough backup SHA-256 is
+`c5ec729f51f41ddddc2d564bd57025af7d2173cebd428282796ded175108e308`.
+Private raw evidence includes individual warmup/measured results and the original recording;
+these archives are not part of the public clone.
+
+### Retirement boundary
+
+The user-approved deadline is November 1, 2026, 23:00 KST, with stop/final-sync at 18:00 and
+cleanup planned from 20:00. This is not a verified provider trial-expiry timestamp. Trial credit use
+was approved; a paid upgrade is outside scope. [Trial expiry or credit exhaustion](https://docs.cloud.google.com/free/docs/free-cloud-features)
+can end access independently of that deadline.
+
+Resource discovery and backups progressed, but some Cloud Run/Vertex regional reads returned
+provider location-policy errors. Those responses are not empty inventories. The current process
+therefore has no armed destructive schedule. Unattended final Drive synchronization and billing
+contract checks also need verified evidence. The separate private execution contract and
+[ADR 020](adr/020-scheduled-cloud-retirement.md) control project-wide cleanup; this runbook does
+not authorize bypassing those gates.
+
+Project shutdown and [provider recovery periods](https://docs.cloud.google.com/resource-manager/docs/delete-restore-projects),
+[Storage soft delete](https://docs.cloud.google.com/storage/docs/soft-delete), delayed charges and
+permanent deletion are distinct states. Neither stopping a VM nor creating a schedule proves
+project cleanup or a zero bill.
